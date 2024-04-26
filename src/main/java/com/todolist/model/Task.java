@@ -1,7 +1,7 @@
 package com.todolist.model;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class Task {
 
@@ -10,11 +10,11 @@ public class Task {
 	@NotBlank(message = "日付を入力してください")
 	private String date;
 
-	@Max(value=30, message="最大文字数は30文字です")
+	@Size(max=30, message="最大文字数は30文字です")
 	@NotBlank(message = "タイトルを入力してください")
 	private String title;
 
-	@Max(value=45, message="最大文字数は45文字です")
+	@Size(max=45, message="最大文字数は45文字です")
 	private String text;
 
 	public int getId() {
