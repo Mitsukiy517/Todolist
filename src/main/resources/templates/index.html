@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/css/bootstrap.min.css" />
+	<title>Todo一覧</title>
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<h5 class="card-title">Todoリスト</h5>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="card card-primary mb-3">
+			<div class="card-header">
+				<a href="/form" class="btn btn-primary float-right">登録</a>
+			</div>
+		</div>
+		<div class="container">
+			<div class="card card-primary mb-3">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th style="width: 10%">日付</th>
+							<th style="width: 20%">タイトル</th>
+							<th style="width: 50%">概要</th>
+							<th style="width: 20%"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="task:${tasks}" th:object="${task}">
+							<td th:text="*{date}"></td>
+							<td th:text="*{title}"></td>
+							<td th:text="*{text}"></td>
+							<td class="float-right">
+								<form th:action="@{/delete/{id}(id=*{id})}" th:method="delete">
+									<button class="btn btn-danger">削除</button>
+								</form>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<script src="/js/jquery-3.7.1.slim.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+</body>
+
+</html>
