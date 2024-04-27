@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/css/bootstrap.min.css" />
+	<title>Todo更新</title>
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<h5 class="card-title">Todo更新</h5>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="card card-primary mb-3">
+			<div class="card-body">
+				<form th:action="@{/update/{id}(id=*{id})}" th:object="${task}" method="post">
+					<div class="form-group row">
+						<label class="col-sm-1 control-label text-center" for="date">日付</label>
+						<div class="col-md-10">
+							<input class="form-control" type="text" name="date" placeholder="yyyy/mm/dd" th:field="*{date}">
+							<div class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+							<div class="text-danger" th:if="${date_check}">yyyy/mm/ddの形式で入力してください</div><br>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-1 control-label text-center" for="title">タイトル</label>
+						<div class="col-md-10">
+							<input class="form-control" type="text" name="title" placeholder="３０文字まで" th:field="*{title}">
+							<div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div><br>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-1 control-label text-center" for="text">概要</label>
+						<div class="col-md-10">
+							<input class="form-control" type="text" name="text" placeholder="４５文字まで"th:field="*{text}">
+							<div class="text-danger" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div><br>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="offset-sm-1 col-md-10">
+							<button class="btn btn-primary">保存</button>
+							<a href="/index" class="btn btn-dark float-right">戻る</a>
+						</div>
+					</div>
+				</form>				
+			</div>
+		</div>
+	</div>
+	<script src="/js/jquery-3.7.1.slim.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+</body>
+
+</html>
