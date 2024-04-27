@@ -58,6 +58,33 @@ public class TaskController {
 		return "redirect:/index";
 	}
 	
+	@GetMapping("/update/{id}")
+	public String update(@ModelAttribute Task task, @PathVariable int id, Model model) {
+		String query = "SELECT * FROM my_app.todolist WHERE id = ?";
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(query, id);
+		task.setDate(list.getFirst().get("date").toString());
+		task.setTitle(list.getFirst().get("title").toString());
+		task.setText(list.getFirst().get("text").toString());
+		task.setId(Integer.parseInt(list.getFirst().get("id").toString()));
+		model.addAttribute("task", task);
+		return "update";
+	}
+	
+	@PostMapping("/update/{id}")
+	public String update(@Validated Task task, BindingResult result, Model model) {
+		if(checkDateFormat(task.getDate())){
+			model.addAttribute("date_check", true);
+			return "form";
+		}
+		else if(result.hasErrors()) {
+			return "form";
+		}
+		
+		String query = "UPDATE my_app.todolist SET date=?, title=?, text=? WHERE id = ?";
+		jdbcTemplate.update(query, task.getDate(), task.getTitle(), task.getText(), task.getId());
+		return "redirect:/index";
+	}
+	
 	public boolean checkDateFormat(String date) {
 		DateFormat format = DateFormat.getDateInstance();
 		format.setLenient(false);
