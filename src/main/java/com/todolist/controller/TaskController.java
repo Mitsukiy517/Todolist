@@ -1,5 +1,6 @@
 package com.todolist.controller;
 
+import java.text.DateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -36,11 +37,16 @@ public class TaskController {
 	}
 
 	@PostMapping("/form")
-	public String confirm(@Validated Task task, BindingResult result) {
-		if(result.hasErrors()) {
+	public String confirm(@Validated Task task, BindingResult result, Model model) {
+		if(checkDateFormat(task.getDate())){
+			model.addAttribute("date_check", true);
 			return "form";
 		}
-		String query = "INSERT INTO my_app.todolist (date, title, text) VALUES (?, ?, ?);";
+		else if(result.hasErrors()) {
+			return "form";
+		}
+		
+		String query = "INSERT INTO my_app.todolist (date, title, text) VALUES (?, ?, ?)";
 		jdbcTemplate.update(query, task.getDate(), task.getTitle(), task.getText());
 		return "redirect:/index";
 	}
@@ -51,5 +57,21 @@ public class TaskController {
 		jdbcTemplate.update(query, id);
 		return "redirect:/index";
 	}
+	
+	public boolean checkDateFormat(String date) {
+		DateFormat format = DateFormat.getDateInstance();
+		format.setLenient(false);
+		if(date == null || date.length() != 10) {
+			return true;
+		}
+		try {
+			format.parse(date);
+			return false;
+		}catch(Exception e) {
+			return true;
+		}
+				
+	}
+		
 
 }
